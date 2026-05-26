@@ -1,0 +1,54 @@
+{
+	"name": "@popup-maker/extension-build-tools",
+	"version": "1.0.0",
+	"description": "Shared webpack and release tooling for Popup Maker standalone extensions.",
+	"author": "Code Atlantic LLC",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"wordpress",
+		"popup-maker",
+		"webpack",
+		"extensions"
+	],
+	"homepage": "https://github.com/PopupMaker/extension-build-tools",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/PopupMaker/extension-build-tools.git"
+	},
+	"bugs": {
+		"url": "https://github.com/PopupMaker/extension-build-tools/issues"
+	},
+	"main": "index.js",
+	"exports": {
+		".": "./index.js",
+		"./webpack": "./webpack/index.js",
+		"./release": "./release/build-release.js"
+	},
+	"bin": {
+		"extension-build-release": "./release/build-release.js"
+	},
+	"files": [
+		"index.js",
+		"webpack/",
+		"release/",
+		"README.md"
+	],
+	"dependencies": {
+		"@popup-maker/custom-templated-path-webpack-plugin": "^2.6.2",
+		"@popup-maker/dependency-extraction-webpack-plugin": "^6.23.1",
+		"copy-webpack-plugin": "^12.0.2",
+		"glob": "^13.0.6",
+		"mini-css-extract-plugin": "^2.9.2",
+		"rtlcss-webpack-plugin": "^4.0.7"
+	},
+	"peerDependencies": {
+		"@wordpress/scripts": ">=27.0.0",
+		"webpack": ">=5.0.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"lint": "wp-scripts lint-js ."
+	}
+}

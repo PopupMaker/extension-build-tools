@@ -477,27 +477,35 @@ class PluginReleaseBuilder {
 
 	async runNpmBuild() {
 		return new Promise( ( resolve, reject ) => {
-			// Check if package.json has build scripts
-			let buildCommand;
+			const packageManager = this.getPackageManager();
+			let buildScript = null;
+
 			if (
 				this.packageJSON.scripts &&
 				this.packageJSON.scripts[ 'build:production' ]
 			) {
-				buildCommand = 'npm run build:production';
+				buildScript = 'build:production';
 			} else if (
 				this.packageJSON.scripts &&
 				this.packageJSON.scripts.build
 			) {
-				buildCommand = 'NODE_ENV=production npm run build';
-			} else {
+				buildScript = 'build';
+			}
+
+			if ( ! buildScript ) {
 				if ( ! this.options.quiet ) {
 					console.log(
-						'No build scripts found in package.json, skipping npm build'
+						'No build scripts found in package.json, skipping asset build'
 					);
 				}
 				resolve();
 				return;
 			}
+
+			const buildCommand =
+				buildScript === 'build:production'
+					? `${ packageManager } run build:production`
+					: `NODE_ENV=production ${ packageManager } run build`;
 
 			if ( this.options.verbose ) {
 				console.log( 'Building production assets...' );
@@ -527,7 +535,7 @@ class PluginReleaseBuilder {
 					console.log( '❌' );
 				}
 
-				console.error( `\n❌ NPM build failed:` );
+				console.error( `\n❌ Asset build failed:` );
 				if ( error.stdout ) {
 					console.error( 'STDOUT:' );
 					console.error( error.stdout.toString() );
@@ -541,6 +549,23 @@ class PluginReleaseBuilder {
 				reject( error );
 			}
 		} );
+	}
+
+	getPackageManager() {
+		if (
+			this.packageJSON.packageManager &&
+			this.packageJSON.packageManager.startsWith( 'pnpm' )
+		) {
+			return 'pnpm';
+		}
+
+		if (
+			fs.existsSync( path.join( this.projectRoot, 'pnpm-lock.yaml' ) )
+		) {
+			return 'pnpm';
+		}
+
+		return 'npm';
 	}
 }
 

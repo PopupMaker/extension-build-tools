@@ -24,22 +24,10 @@ Or from the site root:
 
 ### Consumption
 
-Extensions should depend on the registry package:
-
 ```json
 {
   "devDependencies": {
-    "@popup-maker/extension-build-tools": "^1.0.0"
-  }
-}
-```
-
-Until npm is indexed, install from GitHub:
-
-```json
-{
-  "devDependencies": {
-    "@popup-maker/extension-build-tools": "github:PopupMaker/extension-build-tools#v1.0.0"
+    "@popup-maker/extension-build-tools": "^1.1.0"
   }
 }
 ```

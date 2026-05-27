@@ -1,6 +1,6 @@
 {
 	"name": "@popup-maker/extension-build-tools",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Shared webpack and release tooling for Popup Maker standalone extensions.",
 	"author": "Code Atlantic LLC",
 	"license": "GPL-2.0-or-later",
@@ -22,15 +22,20 @@
 	"exports": {
 		".": "./index.js",
 		"./webpack": "./webpack/index.js",
-		"./release": "./release/build-release.js"
+		"./release": "./release/build-release.js",
+		"./scripts/extract-changelog": "./scripts/extract-changelog.js",
+		"./scripts/prepare-extension-release": "./scripts/prepare-extension-release.js"
 	},
 	"bin": {
-		"extension-build-release": "./release/build-release.js"
+		"extension-build-release": "./release/build-release.js",
+		"extension-extract-changelog": "./scripts/extract-changelog.js",
+		"extension-prepare-release": "./scripts/prepare-extension-release.js"
 	},
 	"files": [
 		"index.js",
 		"webpack/",
 		"release/",
+		"scripts/",
 		"README.md"
 	],
 	"dependencies": {

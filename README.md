@@ -102,3 +102,23 @@ Override per extension in `package.json`:
 **Force Potomatic during a release build:** `EXTENSION_I18N_TRANSLATE=1 pnpm run release`
 
 **Skip langpack step:** `pnpm run release -- --skip-i18n`
+
+## GitHub secrets & variables
+
+Copy `.env.secrets.example` → `.env.secrets` (gitignored), fill in values, then:
+
+```json
+{
+  "scripts": {
+    "secrets:sync": "extension-sync-repo-secrets"
+  }
+}
+```
+
+```bash
+pnpm run secrets:sync
+# or target another repo:
+GITHUB_REPO=PopupMaker/Exit-Intent pnpm run secrets:sync
+```
+
+Uses `# --- Secrets ---` / `# --- Variables ---` section headers in `.env.secrets` to route keys to encrypted secrets vs repo variables. Requires [GitHub CLI](https://cli.github.com/) (`gh auth login`).

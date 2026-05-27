@@ -1,6 +1,6 @@
 {
 	"name": "@popup-maker/extension-build-tools",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "Shared webpack and release tooling for Popup Maker standalone extensions.",
 	"author": "Code Atlantic LLC",
 	"license": "GPL-2.0-or-later",
@@ -25,14 +25,16 @@
 		"./release": "./release/build-release.js",
 		"./scripts/extract-changelog": "./scripts/extract-changelog.js",
 		"./scripts/prepare-extension-release": "./scripts/prepare-extension-release.js",
-		"./scripts/build-extension-i18n": "./scripts/build-extension-i18n.js"
+		"./scripts/build-extension-i18n": "./scripts/build-extension-i18n.js",
+		"./scripts/setup-repo-secrets": "./scripts/setup-repo-secrets.sh"
 	},
 	"bin": {
 		"extension-build-release": "release/build-release.js",
 		"extension-build-i18n": "scripts/build-extension-i18n.js",
 		"extension-extract-changelog": "scripts/extract-changelog.js",
 		"extension-prepare-release": "scripts/prepare-extension-release.js",
-		"extension-run-potomatic": "scripts/run-potomatic.js"
+		"extension-run-potomatic": "scripts/run-potomatic.js",
+		"extension-sync-repo-secrets": "scripts/setup-repo-secrets.sh"
 	},
 	"files": [
 		"index.js",

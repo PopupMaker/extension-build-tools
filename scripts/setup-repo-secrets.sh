@@ -3,23 +3,35 @@
 # Sync .env.secrets to GitHub Actions secrets and variables.
 #
 # Usage:
-#   ./bin/setup-repo-secrets.sh [owner/repo]
-#   GITHUB_REPO=PopupMaker/other-plugin ./bin/setup-repo-secrets.sh
+#   extension-sync-repo-secrets [owner/repo]
+#   pnpm run secrets:sync
+#   GITHUB_REPO=PopupMaker/other-plugin extension-sync-repo-secrets
 #
 # .env.secrets format (plugin root):
 #   # --- Secrets ... ---
-#   MY_SECRET="value"
-#   JSON_SECRET="@/path/to/file.json"
+#   OPENAI_API_KEY="sk-..."
+#   SLACK_WEBHOOK="https://..."
 #
 #   # --- Variables ... ---
-#   MY_VAR="480197"
+#   DEFAULT_TRANSLATION_LANGUAGES="es_ES,fr_FR,..."
+#   DEFAULT_TRANSLATION_MAX_COST="2.00"
+#   EDD_PRODUCT_ID="25"
 
 set -eo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-ENV_FILE="${PLUGIN_ROOT}/.env.secrets"
 REPO="${GITHUB_REPO:-${1:-}}"
+
+# npm/pnpm: run from extension root (cwd). Legacy: ./bin/setup-repo-secrets.sh next to bin/.
+if [ -f "$(pwd)/.env.secrets" ]; then
+	PLUGIN_ROOT="$(pwd)"
+elif [ -f "${SCRIPT_DIR}/../.env.secrets" ]; then
+	PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+else
+	PLUGIN_ROOT="${PLUGIN_ROOT:-$(pwd)}"
+fi
+
+ENV_FILE="${PLUGIN_ROOT}/.env.secrets"
 
 if ! command -v gh >/dev/null 2>&1; then
 	echo "❌ GitHub CLI (gh) is required. Install: https://cli.github.com/"

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1 - 2026-05-27
+
+### Added
+- `extension-sync-repo-secrets` CLI — sync `.env.secrets` to GitHub Actions secrets and variables (`pnpm run secrets:sync`).
+
 ## 1.2.0 - 2026-05-27
 
 ### Added

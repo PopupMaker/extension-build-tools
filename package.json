@@ -27,9 +27,9 @@
 		"./scripts/prepare-extension-release": "./scripts/prepare-extension-release.js"
 	},
 	"bin": {
-		"extension-build-release": "./release/build-release.js",
-		"extension-extract-changelog": "./scripts/extract-changelog.js",
-		"extension-prepare-release": "./scripts/prepare-extension-release.js"
+		"extension-build-release": "release/build-release.js",
+		"extension-extract-changelog": "scripts/extract-changelog.js",
+		"extension-prepare-release": "scripts/prepare-extension-release.js"
 	},
 	"files": [
 		"index.js",

@@ -191,11 +191,12 @@ function main() {
 		run( 'pnpm install' );
 		run( 'composer update --lock' );
 		run( 'pnpm run build:production' );
+		run( 'pnpm exec extension-build-i18n -- --skip-translate' );
 	}
 
 	if ( autoMode && ! dryRun ) {
 		run(
-			`git add package.json composer.json CHANGELOG.md ${ mainFile } pnpm-lock.yaml`
+			`git add package.json composer.json CHANGELOG.md ${ mainFile } pnpm-lock.yaml languages/`
 		);
 		run(
 			`git commit -m "chore: release v${ targetVersion }"`

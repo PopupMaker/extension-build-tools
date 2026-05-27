@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.0 - 2026-05-27
+
+### Added
+- `extension-build-i18n` CLI — regenerate POT, merge PO files, optionally run Potomatic, compile MO + JSON langpacks.
+- `extension-build-release` now builds language packs before zipping (use `--skip-i18n` to opt out).
+- Shared default translation locale list (15 languages) in `scripts/default-translation-languages.js`.
+
 ## 1.1.0 - 2026-05-27
 
 ### Added

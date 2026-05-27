@@ -43,6 +43,7 @@ class PluginReleaseBuilder {
 			keepBuild: false,
 			skipComposer: false,
 			skipNpm: false,
+			skipI18n: false,
 			quiet: false,
 			verbose: false,
 			...options,
@@ -356,6 +357,10 @@ class PluginReleaseBuilder {
 			// Run composer and npm builds in parallel for significant time savings
 			await this.runParallelBuilds();
 
+			if ( ! this.options.skipI18n ) {
+				this.runI18nBuild();
+			}
+
 			this.copyDistributionFiles();
 			// eslint-disable-next-line no-unused-vars
 			const _zipPath = this.createZipFiles();
@@ -567,6 +572,36 @@ class PluginReleaseBuilder {
 
 		return 'npm';
 	}
+
+	runI18nBuild() {
+		if ( ! this.options.quiet ) {
+			console.log( '\n=== Building language packs ===' );
+		}
+
+		const i18nScript = path.join(
+			__dirname,
+			'..',
+			'scripts',
+			'build-extension-i18n.js'
+		);
+
+		if ( ! fs.existsSync( i18nScript ) ) {
+			if ( ! this.options.quiet ) {
+				console.log( 'No i18n build script found, skipping language packs' );
+			}
+			return;
+		}
+
+		const translateOnRelease =
+			process.env.EXTENSION_I18N_TRANSLATE === '1' ||
+			process.env.EXTENSION_I18N_TRANSLATE === 'true';
+		const args = translateOnRelease ? '--translate' : '--skip-translate';
+		const command = `node "${ i18nScript }" ${ args }${
+			this.options.verbose ? ' --verbose' : ''
+		}`;
+
+		this.executeCommand( command, 'Building language packs' );
+	}
 }
 
 // CLI argument parsing
@@ -611,6 +646,10 @@ function parseArgs() {
 				options.skipNpm = true;
 				break;
 
+			case '--skip-i18n':
+				options.skipI18n = true;
+				break;
+
 			case '--quiet':
 				options.quiet = true;
 				break;
@@ -644,6 +683,7 @@ Options:
   --keep-build           Keep build directory after creating zip
   --skip-composer        Skip composer install step
   --skip-npm             Skip npm build step
+  --skip-i18n            Skip POT/MO/JSON language pack build
   --quiet                Minimal output (progress only)
   --verbose              Show detailed output from build commands
   --help                 Show this help message

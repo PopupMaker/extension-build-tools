@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.2 - 2026-05-28
+
+### Fixed
+- `extension-extract-changelog` supports `MM/DD/YYYY` and ISO date suffixes in version headings.
+- `--latest` correctly matches the final version section at EOF in `CHANGELOG.md`.
+- Strips optional `v` prefix from explicit version arguments.
+
 ## 1.2.1 - 2026-05-27
 
 ### Added

@@ -30,9 +30,12 @@ if ( ! fs.existsSync( changelogPath ) ) {
 
 const changelogContent = fs.readFileSync( changelogPath, 'utf8' );
 
+const DATE_SUFFIX =
+	'(?:\\s*-\\s*(?:[0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}))?';
+
 function extractVersionContent( content, version ) {
 	const headingPattern = new RegExp(
-		`^## (?:v)?${ version }(?:\\s*-\\s*[0-9]{4}-[0-9]{2}-[0-9]{2})?\\s*$`
+		`^## (?:v)?${ version }${ DATE_SUFFIX }\\s*$`
 	);
 	const blocks = content.split( /\n(?=## )/ );
 
@@ -60,8 +63,10 @@ function extractUnreleasedContent( content ) {
 }
 
 function extractLatestVersion( content ) {
-	const versionPattern =
-		/^## (?:v)?(\d+\.\d+\.\d+)(?:\s*-\s*[0-9]{4}-[0-9]{2}-[0-9]{2})?\s*\n([\s\S]*?)(?=\n## [^#])/m;
+	const versionPattern = new RegExp(
+		`^## (?:v)?(\\d+\\.\\d+\\.\\d+)${ DATE_SUFFIX }\\s*\\n([\\s\\S]*?)(?=\\n## |\\z)`,
+		'm'
+	);
 	const matches = content.match( versionPattern );
 
 	if ( ! matches ) {
@@ -105,11 +110,12 @@ try {
 		extractedContent = latest.content;
 		versionNumber = latest.version;
 	} else {
+		const normalizedVersion = targetVersion.replace( /^v/, '' );
 		extractedContent = extractVersionContent(
 			changelogContent,
-			targetVersion.replace( /^v/, '' )
+			normalizedVersion
 		);
-		versionNumber = targetVersion.replace( /^v/, '' );
+		versionNumber = normalizedVersion;
 
 		if ( ! extractedContent ) {
 			console.error(
